@@ -30,8 +30,14 @@ dependencies:
   #SQfllite
   sqflite: ^1.2.0
 
-  #path_ provider
-  path_provider: ^1.6.0
+  #path_provider
+  path_provider: 
+
+  #url_launcher
+  url_launcher: ^5.4.1
+
+  #flutter_map
+  flutter_map: ^0.8.2
 
 dev_dependencies:
   flutter_test:

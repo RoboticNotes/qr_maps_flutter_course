@@ -1,4 +1,11 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+
+import 'package:qrreaderapp/src/bloc/scan_bloc.dart';
+import 'package:qrreaderapp/src/models/scan_model.dart';
+import 'package:qrreaderapp/src/utils/scan_util.dart' as utils;
+
 import '../pages/direcciones_page.dart';
 import '../pages/mapas_page.dart';
 
@@ -11,7 +18,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-
+  final scansBloc = new ScansBloc();
   int curreentIndex = 0;
   
   @override
@@ -22,7 +29,7 @@ class _HomePageState extends State<HomePage> {
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.delete_forever),
-            onPressed: (){ },
+            onPressed: scansBloc.borrarScanTodos,
           )
         ],
       ),
@@ -31,13 +38,13 @@ class _HomePageState extends State<HomePage> {
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.filter_center_focus),
-        onPressed: _scanQR,
+        onPressed: ()=>_scanQR(context),
         backgroundColor: Theme.of(context).primaryColor,
       ),
     );
   }
 
-  _scanQR() async {
+  _scanQR(BuildContext context) async {
     String futureString = '';
 
     try {
@@ -49,7 +56,17 @@ class _HomePageState extends State<HomePage> {
     print('Future string: $futureString' );
 
     if(futureString != null){
-      print('TENEMOS INFORMACIÓN');
+      final scan = ScanModel(valor: futureString);
+      scansBloc.agregarScan(scan);
+
+      final scan2 = ScanModel(valor: 'geo:40.724233047051705,-74.00731459101564');
+      scansBloc.agregarScan(scan2);
+
+      if(Platform.isIOS){
+        Future.delayed(Duration(milliseconds: 750), (){
+          utils.abrirScan(scan, context);
+        });
+      }
     }
 
   }
