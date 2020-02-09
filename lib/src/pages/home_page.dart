@@ -66,6 +66,8 @@ class _HomePageState extends State<HomePage> {
         Future.delayed(Duration(milliseconds: 750), (){
           utils.abrirScan(scan, context);
         });
+      }else{
+         utils.abrirScan(scan, context);
       }
     }
 
